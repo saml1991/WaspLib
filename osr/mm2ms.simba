@@ -48,29 +48,24 @@ begin
 end;
 
 type
-  TRSMouseScroll = type Pointer;
-
-//TRUE cases with match:
-//0..69, 71..80, 82..100
-
-//MISSING TRUE cases to map:
-//79, 81
-
+  TRSMouseScroll = record
+    StartZoom: Int32;
+  end;
 
 //Start at 0..3, 7, 8, 14, 24, 32, 38, 46, 51, 59, 65, 73, 78, 86, 92, 100 True
 //0, 3, 6, 9, 12..14, 16..17, 19..20, 22..23, 25..26, 28..100  False
-function TRSMouseScroll.GetStepValue1(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue1(Level: Int32; Direction: Boolean): Int32;
 begin
   case Direction of
-    True: case StartZoom of
+    True: case Level of
             1: Result := -1;
-            2: Result := -2;          //24 missing for 24!
+            2: Result := -2;
             3..7, 9..12, 17..20, 23, 25, 26, 28..31, 33..35, 41..44, 47, 49, 52, 54..57, 60, 62, 68..71, 74..76, 79..84, 93, 96: Result := -3;
             14, 38, 41, 64, 65, 67, 89, 91: Result := -5;
             else Result := -4;
           end;
 
-    False: case StartZoom of
+    False: case Level of
               99: Result := 1;
               1, 5, 7, 9, 10, 14, 29, 98: Result := 2;
               11, 34..36, 60..62, 84..86: Result := 4;
@@ -81,10 +76,10 @@ end;
 
 //Start at 1..4, 7, 17..18, 30..31, 44..45, 57..58, 71..72, 83..85, 97..99 True and
 //1..2, 5, 8, 11, 15, 18, 21, 24, 27 False
-function TRSMouseScroll.GetStepValue2(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue2(Level: Int32; Direction: Boolean): Int32;
 begin
   case Direction of
-    True: case StartZoom of
+    True: case Level of
             1: Result := -1;
             2: Result := -2;
             3, 5, 6, 8..12, 19..27, 32..36, 41, 46..55, 59..63, 67..68, 73..81, 86, 91..95: Result := -3;
@@ -92,7 +87,7 @@ begin
             else Result := -4;
           end;
 
-    False: case StartZoom of
+    False: case Level of
               99: Result := 1;
               1, 5, 24, 27, 98: Result := 2;
               10, 12, 34, 35, 60, 62, 84, 85: Result := 4;
@@ -102,10 +97,10 @@ begin
 end;
 
 //Start 4, 7, 10 False
-function TRSMouseScroll.GetStepValue3(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue3(Level: Int32; Direction: Boolean): Int32;
 begin
   case Direction of
-    False: case StartZoom of
+    False: case Level of
               99: Result := 1;
               7, 10, 98: Result := 2;
               12, 34, 62, 84: Result := 4;
@@ -115,10 +110,10 @@ begin
 end;
 
 //Start at 0..3, 6, 7, 9, 12, 18, 21, 26, 34, 40, 48, 53, 61, 67, 75, 80, 89, 94 True
-function TRSMouseScroll.GetStepValue4(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue4(Level: Int32; Direction: Boolean): Int32;
 begin
   if Direction then
-    case StartZoom of
+    case Level of
       1: Result := -1;
       2: Result := -2;
       5, 8, 10..11, 17, 19..20, 22..24, 27..33, 35, 41..47, 49..51, 54..59, 62, 68..74, 76..78, 81..84, 86, 92, 95: Result := -3;
@@ -128,10 +123,10 @@ begin
 end;
 
 //Start at 1..3, 15, 17, 27, 28, 41, 42, 54, 55, 68, 69, 82, 83, 95..97 True
-function TRSMouseScroll.GetStepValue5(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue5(Level: Int32; Direction: Boolean): Int32;
 begin
   if Direction then
-    case StartZoom of
+    case Level of
       1: Result := -1;
       2: Result := -2;
       3, 5..12, 18..26, 30..36, 44..52, 57..62, 71..80, 84..86, 91..93: Result := -3;
@@ -141,10 +136,10 @@ begin
 end;
 
 //Start at 0..3, 8..11, 22, 23, 25, 36, 39, 50, 52, 64, 66, 77, 79, 91, 93 True
-function TRSMouseScroll.GetStepValue6(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue6(Level: Int32; Direction: Boolean): Int32;
 begin
   if Direction then
-    case StartZoom of
+    case Level of
       1: Result := -1;
       2: Result := -2;
       3..7, 12, 17..21, 26..34, 41..48, 53..61, 67..75, 80..86: Result := -3;
@@ -154,10 +149,10 @@ begin
 end;
 
 //Start at 5, 20, 33, 35, 47, 49, 60, 62, 74, 76, 88, 90 True
-function TRSMouseScroll.GetStepValue7(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue7(Level: Int32; Direction: Boolean): Int32;
 begin
   if Direction then
-    case StartZoom of
+    case Level of
       1: Result := -1;
       2: Result := -2;
       3, 4, 7, 9, 10, 12, 17..19, 23..31, 36, 41..45, 50..58, 67..72, 77..85: Result := -3;
@@ -167,10 +162,10 @@ begin
 end;
 
 //Start at 1..3, 5..7, 16, 18, 19, 21, 29, 43, 56, 70, 89 True
-function TRSMouseScroll.GetStepValue8(StartZoom: Int32; Direction: Boolean): Int32;
+function TRSMouseScroll.GetStepValue8(Level: Int32; Direction: Boolean): Int32;
 begin
   if Direction then
-    case StartZoom of
+    case Level of
       1: Result := -1;
       2: Result := -2;
       3, 4, 8..13, 17, 22..28, 30..32, 35, 41, 44..46, 49..55, 57..59, 62, 68, 71, 78..85: Result := -3;
@@ -178,6 +173,131 @@ begin
       else Result := -4;
     end;
 end;
+
+//Start at 79, 81 True
+function TRSMouseScroll.GetStepValue9(Level: Int32; Direction: Boolean): Int32;
+begin
+  if Direction then
+    case Level of
+      1: Result := -1;
+      2 : Result := -2;
+      3..10, 12, 18..23, 28..34, 36, 42..50, 55..61, 69..77: Result := -3;
+      17, 39, 41, 66: Result := -5;
+      else Result := -4;
+    end;
+end;
+
+function TRSMouseScroll.GetStepValueX(Level: Int32; Direction: Boolean): Int32;
+begin
+  if Direction then
+  begin
+    case StartZoom of
+      0..3, 7, 8, 14, 24, 32, 38, 46, 51, 59, 65, 73, 78, 86, 92, 100:
+        case Level of
+          1: Result := -1;
+          2: Result := -2;
+          3..7, 9..12, 17..20, 23, 25, 26, 28..31, 33..35, 41..44, 47, 49, 52, 54..57, 60, 62, 68..71, 74..76, 79..84, 93, 96: Result := -3;
+          14, 38, 41, 64, 65, 67, 89, 91: Result := -5;
+          else Result := -4;
+        end;
+
+      1..4, 7, 17..18, 30..31, 44..45, 57..58, 71..72, 83..85, 97..99:
+        case Level of
+          1: Result := -1;
+          2: Result := -2;
+          3, 5, 6, 8..12, 19..27, 32..36, 41, 46..55, 59..63, 67..68, 73..81, 86, 91..95: Result := -3;
+          16..17: Result := -5;
+          else Result := -4;
+        end;
+
+      0..3, 6, 7, 9, 12, 18, 21, 26, 34, 40, 48, 53, 61, 67, 75, 80, 89, 94:
+        case Level of
+          1: Result := -1;
+          2: Result := -2;
+          5, 8, 10..11, 17, 19..20, 22..24, 27..33, 35, 41..47, 49..51, 54..59, 62, 68..74, 76..78, 81..84, 86, 92, 95: Result := -3;
+          16, 39, 40, 66, 67, 89, 91: Result := -5;
+          else Result := -4;
+        end;
+
+      1..3, 15, 17, 27, 28, 41, 42, 54, 55, 68, 69, 82, 83, 95..97:
+        case Level of
+          1: Result := -1;
+          2: Result := -2;
+          3, 5..12, 18..26, 30..36, 44..52, 57..62, 71..80, 84..86, 91..93: Result := -3;
+          15..17, 40..41, 67: Result := -5;
+          else Result := -4;
+        end;
+
+      0..3, 8..11, 22, 23, 25, 36, 39, 50, 52, 64, 66, 77, 79, 91, 93:
+        case Level of
+          1: Result := -1;
+          2: Result := -2;
+          3..7, 12, 17..21, 26..34, 41..48, 53..61, 67..75, 80..86: Result := -3;
+          14, 38, 39, 64, 65, 66, 91: Result := -5;
+          else Result := -4;
+        end;
+
+      5, 20, 33, 35, 47, 49, 60, 62, 74, 76, 88, 90:
+        case Level of
+          1: Result := -1;
+          2: Result := -2;
+          3, 4, 7, 9, 10, 12, 17..19, 23..31, 36, 41..45, 50..58, 67..72, 77..85: Result := -3;
+          88..90: Result := -5;
+          else Result := -4;
+        end;
+
+      1..3, 5..7, 16, 18, 19, 21, 29, 43, 56, 70, 89:
+        case Level of
+          1: Result := -1;
+          2: Result := -2;
+          3, 4, 8..13, 17, 22..28, 30..32, 35, 41, 44..46, 49..55, 57..59, 62, 68, 71, 78..85: Result := -3;
+          16, 88..90: Result := -5;
+          else Result := -4;
+        end;
+
+      79, 81:
+        case Level of
+          1: Result := -1;
+          2 : Result := -2;
+          3..10, 12, 18..23, 28..34, 36, 42..50, 55..61, 69..77: Result := -3;
+          17, 39, 41, 66: Result := -5;
+          else Result := -4;
+        end;
+
+    end;
+  end else
+  begin
+    case StartZoom of
+      0, 3, 6, 9, 12..14, 16..17, 19..20, 22..23, 25..26, 28..100:
+        case Level of
+          1: Result := -1;
+          2 : Result := -2;
+          3..10, 12, 18..23, 28..34, 36, 42..50, 55..61, 69..77: Result := -3;
+          17, 39, 41, 66: Result := -5;
+          else Result := -4;
+        end;
+
+      1..2, 5, 8, 11, 15, 18, 21, 24, 27:
+        case Level of
+          99: Result := 1;
+          1, 5, 24, 27, 98: Result := 2;
+          10, 12, 34, 35, 60, 62, 84, 85: Result := 4;
+          else Result := 3;
+        end;
+
+      4, 7, 10:
+        case Level of
+          99: Result := 1;
+          7, 10, 98: Result := 2;
+          12, 34, 62, 84: Result := 4;
+          else Result := 3;
+        end;
+
+    end;
+  end;
+end;
+
+
 
 
 
@@ -198,7 +318,7 @@ begin
   Writeln(Direction);
   repeat
     Writeln(MM2MS.ZoomLevel);
-    MM2MS.ZoomLevel += Self.GetStepValue8(MM2MS.ZoomLevel, Direction);
+    MM2MS.ZoomLevel += Self.GetStepValue6(MM2MS.ZoomLevel, Direction);
     ScrollAmount += 1;
   until (not Direction and (MM2MS.ZoomLevel >= Level) or (Direction and (MM2MS.ZoomLevel <= Level)));
 
@@ -243,6 +363,33 @@ begin
 
   Result := True;
 end;
+
+function TRSMouseScroll.SetZoomLevelX(Level: Int32): Boolean;
+var
+  Direction: Boolean;
+  ScrollAmount: Int32;
+  i: int32;
+begin
+  StartZoom := MM2MS.ZoomLevel;
+
+  if (MM2MS.ZoomLevel = Level) or not MM2MS.IsZoomLevelValid(Level) then
+    Exit;
+
+  Direction := MM2MS.ZoomLevel > Level;
+  Writeln(Direction);
+  repeat
+    Writeln(MM2MS.ZoomLevel);
+    MM2MS.ZoomLevel += Self.GetStepValueX(MM2MS.ZoomLevel, Direction);
+    ScrollAmount += 1;
+  until (not Direction and (MM2MS.ZoomLevel >= Level) or
+        (Direction and (MM2MS.ZoomLevel <= Level)));
+
+  for i := 1 to ScrollAmount do
+    Mouse.Scroll(MainScreen.Bounds, 1, Direction);
+
+  Result := True;
+end;
+
 
 var
   MouseScroll: TRSMouseScroll;
