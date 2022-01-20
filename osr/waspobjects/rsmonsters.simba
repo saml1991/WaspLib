@@ -45,7 +45,8 @@ type
     DarkBeast,
     SmokeDevil,
     Hydra,
-    Hellhound: TRSMonster;
+    Hellhound,
+    GreaterNechryael: TRSMonster; 
   end;
 
 
@@ -181,6 +182,10 @@ begin
   DarkBeast.SetupCommon('Dark beast');
   DarkBeast.Finder.Colors += CTS2(1254983, 12, 0.54, 3.80);
 
+  GreaterNechryael.SetupCommon('Greater Nechryael');
+  GreaterNechryael.Finder.Colors += CTS2(8558006, 7, 0.04, 1.09);
+  GreaterNechryael.UpText += 'echr';
+ 
   SmokeDevil.SetupCommon('Smoke devil');
   Hydra.SetupCommon('Hydra');
 end;
@@ -242,6 +247,7 @@ begin
     [5094, 164], [5090, 132], [5080, 99], [5138, 106], [5138, 142]]);
   DarkBeast.SetupCommon(Walker, 60, 7, [[3131, 3045], [7346, 5240]]);
   Hellhound.SetupCommon(Walker, 30, 6, [[264,2991]]);
+  GreaterNechryael.SetupCommon(Walker, 30, 8, [[507,2917]]);
 end;
 
 var
